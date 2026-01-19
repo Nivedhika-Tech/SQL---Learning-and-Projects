@@ -1,4 +1,4 @@
-Q1. Find accounts that have done at least one withdrawal transaction
+**Q1. Find accounts that have done at least one withdrawal transaction**
 SELECT * 
 FROM accounts a 
 WHERE EXISTS (
