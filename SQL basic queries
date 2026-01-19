@@ -1,0 +1,37 @@
+1.Show all transactions for account_id = 1
+     select * from transactions where account_id=1;
+2.Find all transactions where transaction_type is either Deposit or Withdrawal
+     select * from transactions where transaction_type in ("Deposit", "withdrawal");
+3.List transactions that happened between 2025-03-01 and 2025-06-30.
+       select * from transactions where transaction_date between "2025-03-01" and "2025-06-30";
+4.Find transactions whose remarks contain the word “Transfer”.
+       select * from transactions where remarks like "%transfer%";
+5.Show all transactions that occurred in the year 2025
+    select * from transactions where transaction_date like "%2025%";          
+6.Get all transactions that occurred in March (any year).
+     select * from transactions where month(transaction_date) = "3";
+7.Find the total amount transacted by each account_id.
+      select  account_id,sum(amount) from transactions group by account_id;
+8.Show accounts whose total transaction amount is greater than 10,000
+     select account_id, sum(amount) as total  from transactions group by account_id having total>10000;
+9.. Find total Deposit amount per account
+    select account_id, transaction_type,sum(amount) from transactions where transaction_type="deposit" group by account_id;
+10.Show the top 5 highest transactions by amount.
+      select * from transactions order by amount desc limit 5;
+11.Show total transaction amount per transaction_type, ordered by total amount (highest first).
+     select transaction_type,sum(amount) from transactions group by transaction_type order by sum(amount) desc;
+12.Find transaction types that have more than 5 transactions.
+     select transaction_type,count(transaction_type) as total  from transactions group by transaction_type having total > 5;
+13.Write a query to display account_ids whose total transaction amount exceeds 50,000
+     select account_id,sum(amount) from transactions group by account_id having sum(amount) > 50000;
+14.Write a query to display accounts having more than 2 Deposit transactions
+   select account_id,count(*) from transactions where transaction_type="deposit" > 2  group       by account_id;     
+15.Write a query to list all transactions where the amount is greater than 1000 and less than 20000
+      select * from transactions where amount between 1000 and 20000; 
+16.Write a query to display transactions that occurred in March or April 2025
+     SELECT * from transactions where transaction_date between “2025-03-01'”and “2025-04-30”;
+17.Write a query to list accounts whose average transaction amount is greater than 5,000
+     select account_id,avg(amount) from transactions group by account_id having avg(amount)> 5000;
+18.Write a query to display the 3rd, 4th, and 5th highest transactions using LIMIT and OFFSET
+     select * from transactions order by amount desc limit 3 offset 2;    
+
