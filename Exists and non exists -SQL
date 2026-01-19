@@ -1,0 +1,101 @@
+Q1. Find accounts that have done at least one withdrawal transaction
+SELECT * 
+FROM accounts a 
+WHERE EXISTS (
+    SELECT 1 
+    FROM transactions t 
+    WHERE t.account_id = a.account_id 
+      AND t.transaction_type = "withdrawal"
+);
+This query retrieves all accounts that have made at least one withdrawal transaction
+
+Q2. Find accounts where total deposited amount > 50,000
+SELECT account_id, SUM(amount) 
+FROM transactions 
+WHERE transaction_type = "deposit" 
+GROUP BY account_id 
+HAVING SUM(amount) > 50000;
+This query returns account IDs where the total deposit amount exceeds 50,000.
+Q3. Find active accounts that have done at least one transaction in 2025
+SELECT * 
+FROM accounts a 
+WHERE EXISTS (
+    SELECT 1 
+    FROM transactions t 
+    WHERE t.account_id = a.account_id 
+      AND YEAR(t.transaction_date) = 2025
+);
+This query finds accounts that had at least one transaction during the year 2025.
+Q4. Find accounts that have done more than 3 transactions
+SELECT account_id, COUNT(*) 
+FROM transactions 
+GROUP BY account_id 
+HAVING COUNT(*) > 3;
+This query lists accounts that have made more than three transactions.
+Q5. Find product details that were returned at least once
+SELECT * 
+FROM product_sales ps 
+WHERE EXISTS (
+    SELECT 1 
+    FROM product_returns pr 
+    WHERE pr.sale_id = ps.sale_id
+);
+This query retrieves product sales that have been returned at least once.
+Q6. Find products returned due to defective reason
+SELECT * 
+FROM product_sales ps 
+WHERE EXISTS (
+    SELECT 1 
+    FROM product_returns pr 
+    WHERE pr.sale_id = ps.sale_id 
+      AND pr.reason = "defective"
+);
+This query finds products that were returned because they were defective.
+Q7. Find all products sold at least once but never returned
+SELECT * 
+FROM product_sales ps 
+WHERE EXISTS (
+    SELECT 1 
+    FROM product_returns pr 
+    WHERE pr.sale_id = ps.sale_id
+) 
+AND NOT EXISTS (
+    SELECT 1 
+    FROM returns r 
+    WHERE r.sale_id = ps.sale_id
+);
+This query lists products that were sold but never returned.
+Q8. Find course names where Alice enrolled but Henry did not
+SELECT * 
+FROM course c 
+WHERE EXISTS (
+    SELECT 1 
+    FROM student s 
+    WHERE c.course_id = s.course_id 
+      AND s.name = "Alice"
+) 
+AND NOT EXISTS (
+    SELECT 1 
+    FROM student s 
+    WHERE c.course_id = s.course_id 
+      AND s.name = "Henry"
+);
+This query finds courses taken by Alice but not by Henry.
+Q9. Find course details taken by at least one student
+SELECT * 
+FROM course c 
+WHERE EXISTS (
+    SELECT 1 
+    FROM student s 
+    WHERE c.course_id = s.course_id
+);
+This query retrieves all courses that have at least one student enrolled.
+Q10. Youngest employee working in each department
+SELECT * 
+FROM employees e1 
+WHERE age = (
+    SELECT MIN(age) 
+    FROM employees e2 
+    WHERE e2.dept_id = e1.dept_id
+);
+This query finds the youngest employee in each department.
